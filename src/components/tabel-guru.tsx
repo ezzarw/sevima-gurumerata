@@ -6,7 +6,7 @@ import { KeadaanKosongFilter } from "@/components/keadaan";
 import { Kartu } from "@/components/kartu";
 import { cekTPG } from "@/lib/domain/logika";
 import type { BarisGuru } from "@/lib/data/kueri";
-import { formatAngka } from "@/lib/data/format";
+import { formatAngka, labelIdentitas } from "@/lib/data/format";
 import { cn } from "@/lib/utils";
 
 const KELAS_BIDANG =
@@ -192,7 +192,7 @@ export function TabelGuru({ guru }: { guru: BarisGuru[] }) {
                           {g.nama}
                         </button>
                         <span className="block font-normal text-[12px] text-teks-lembut">
-                          {g.nip ? `NIP ${g.nip}` : g.nuptk ? `NUPTK ${g.nuptk}` : "NIP belum terdata"}
+                          {labelIdentitas(g)}
                         </span>
                       </th>
                       <td className="px-4 py-2.5">{g.mapel}</td>
@@ -231,7 +231,7 @@ export function TabelGuru({ guru }: { guru: BarisGuru[] }) {
               keterangan={`${barisTerpilih.mapel} · ${barisTerpilih.sekolah_nama}`}
             >
               <dl className="grid gap-x-6 gap-y-3 px-4 py-4 sm:grid-cols-2 lg:grid-cols-3">
-                <Rincian label="NIP" nilai={barisTerpilih.nip ?? "Belum terdata"} />
+                <Rincian label="NIP" nilai={barisTerpilih.nip ?? "Tidak punya NIP (bukan ASN)"} />
                 <Rincian label="NUPTK" nilai={barisTerpilih.nuptk ?? "Belum terdata"} />
                 <Rincian label="Status kepegawaian" nilai={barisTerpilih.status_kepegawaian} />
                 <Rincian label="Sertifikasi" nilai={barisTerpilih.sertifikasi ? "Sudah (punya Serdik)" : "Belum"} />

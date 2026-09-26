@@ -98,26 +98,52 @@ SEKOLAH = [
 # ── Nama guru ──────────────────────────────────────────────────────────
 # (nama depan, nama belakang) — nama Indonesia umum dari berbagai daerah.
 NAMA = [
-    ("Sulastri", ""), ("Ahmad Baedowi", ""), ("Siti Aminah", ""), ("Ratna Kumala", ""), ("Hendra Wijaya", ""),
-    ("Nurlela", ""), ("Bayu Pratama", ""), ("Fitriani", ""), ("Gunawan", ""), ("Dwi Handayani", ""),
-    ("Heri Setiawan", ""), ("Ika Puspita", ""), ("Lukman Hakim", ""), ("Maya Sari", ""), ("Nanda Pratama", ""),
-    ("Asep Saepudin", ""), ("Euis Komariah", ""), ("Dadan Hamdani", ""), ("Neneng Hasanah", ""), ("Slamet Riyadi", ""),
-    ("Oktaviani", ""), ("Wahyu Hidayat", ""), ("Yuni Astuti", ""), ("Zainal Abidin", ""), ("Ayu Wulandari", ""),
-    ("Citra Ayu", ""), ("Dedi Kurniawan", ""), ("Eka Putri Ananda", ""), ("Yohanes Tefa", ""), ("Maria Goreti Bria", ""),
-    ("Petrus Kanisius", ""), ("Yulius Kaka", ""), ("Yosefina Dami", ""), ("Fransiskus Xaverius Ati", ""), ("Nikolaus Ola", ""),
-    ("Dorkas Wenda", ""), ("Yakobus Wanimbo", ""), ("Selviana Rumbiak", ""), ("Marthinus Wenda", ""), ("Apriani Yulianti", ""),
-    ("Rina Marlina", ""), ("Andi Muhammad Ihsan", ""), ("Nurhaeda", ""), ("Baso Ali", ""), ("Rahmatia", ""),
-    ("Muh. Fadli", ""), ("Hasnah Yusuf", ""), ("Taufik Hidayat", ""), ("Umi Kalsum", ""), ("Vina Anggraini", ""),
-    ("Sartika Dewi", ""), ("Ramli Siregar", ""), ("Grace Kila", ""), ("Bonifasius Ninu", ""), ("Hasanuddin", ""),
-    ("Sitti Rahmawati", ""), ("Jonatan Rumbekwan", ""), ("Agustina Malo", ""), ("Ferdinandus Leki", ""), ("Sri Handayani", ""),
-    ("Bambang Setiadi", ""), ("Lilis Suryani", ""), ("Muhammad Arifin", ""), ("Nurlaila", ""), ("Antonius Doko", ""),
-    ("Theresia Kewa", ""), ("Yohanis Rumbiak", ""), ("Selpiana Tefa", ""), ("Ahmad Fauzi", ""), ("Dewi Kartika", ""),
-    ("Erna Wati", ""), ("Firman Syah", ""), ("Gita Permata", ""), ("Hasan Basri", ""), ("Indah Purnama", ""),
-    ("Joko Susilo", ""), ("Kartini", ""), ("Lalu Hamzanwadi", ""), ("Murni Sari", ""), ("Nasruddin", ""),
-    ("Oktovina Bria", ""), ("Paulus Kaka", ""), ("Qori Amalia", ""), ("Rusli Tanjung", ""), ("Sitti Aminah", ""),
-    ("Tuti Herawati", ""), ("Umar Faruk", ""), ("Veronika Wenda", ""), ("Wahid Hasyim", ""), ("Yanti Suryani", ""),
-    ("Zulkifli", ""), ("Anita Rahmawati", ""), ("Benny Sinaga", ""), ("Cahyo Nugroho", ""), ("Dahlia", ""),
-    ("Endang Supriatna", ""), ("Fajar Nugraha", ""), ("Gusti Ayu", ""), ("Heryanto", ""), ("Irma Susanti", ""),
+    # 220 nama guru Indonesia dari berbagai daerah. Jumlahnya sengaja di atas
+    # kebutuhan (174 guru) supaya tidak ada nama yang berputar dan berulang.
+    "Sulastri", "Ahmad Baedowi", "Siti Aminah", "Ratna Kumala", "Hendra Wijaya",
+    "Nurlela", "Bayu Pratama", "Fitriani", "Gunawan", "Dwi Handayani",
+    "Heri Setiawan", "Ika Puspita", "Lukman Hakim", "Maya Sari", "Nanda Pratama",
+    "Asep Saepudin", "Euis Komariah", "Dadan Hamdani", "Neneng Hasanah", "Slamet Riyadi",
+    "Oktaviani", "Wahyu Hidayat", "Yuni Astuti", "Zainal Abidin", "Ayu Wulandari",
+    "Citra Ayu", "Dedi Kurniawan", "Eka Putri Ananda", "Yohanes Tefa", "Maria Goreti Bria",
+    "Petrus Kanisius", "Yulius Kaka", "Yosefina Dami", "Fransiskus Xaverius Ati", "Nikolaus Ola",
+    "Dorkas Wenda", "Yakobus Wanimbo", "Selviana Rumbiak", "Marthinus Wenda", "Apriani Yulianti",
+    "Rina Marlina", "Andi Muhammad Ihsan", "Nurhaeda", "Baso Ali", "Rahmatia",
+    "Muhammad Fadli", "Hasnah Yusuf", "Taufik Hidayat", "Umi Kalsum", "Vina Anggraini",
+    "Sartika Dewi", "Ramli Siregar", "Grace Kila", "Bonifasius Ninu", "Hasanuddin",
+    "Sitti Rahmawati", "Jonatan Rumbekwan", "Agustina Malo", "Ferdinandus Leki", "Sri Handayani",
+    "Bambang Setiadi", "Lilis Suryani", "Muhammad Arifin", "Nurlaila", "Antonius Doko",
+    "Theresia Kewa", "Yohanis Rumbiak", "Selpiana Tefa", "Ahmad Fauzi", "Dewi Kartika",
+    "Erna Wati", "Firman Syah", "Gita Permata", "Hasan Basri", "Indah Purnama",
+    "Joko Susilo", "Kartini", "Lalu Hamzanwadi", "Murni Sari", "Nasruddin",
+    "Oktovina Bria", "Paulus Kaka", "Qori Amalia", "Rusli Tanjung", "Sitti Aminah",
+    "Tuti Herawati", "Umar Faruk", "Veronika Wenda", "Wahid Hasyim", "Yanti Suryani",
+    "Zulkifli", "Anita Rahmawati", "Benny Sinaga", "Cahyo Nugroho", "Dahlia",
+    "Endang Supriatna", "Fajar Nugraha", "Gusti Ayu Ratih", "Heryanto", "Irma Susanti",
+    "Jamaluddin", "Kholid Hidayat", "Lestari Ningsih", "Muhaimin", "Novita Sari",
+    "Oman Suherman", "Panca Wijaya", "Qomarudin", "Rahmawati", "Suryadi",
+    "Titik Handayani", "Usman Ali", "Vera Lestari", "Warsito", "Yulia Puspita",
+    "Zaenal Arifin", "Arif Budiman", "Bella Kartika", "Candra Kurniawan", "Damayanti",
+    "Eko Prasetyo", "Farida Hanum", "Gede Sukarta", "Hidayah Putri", "Iwan Setiawan",
+    "Jumiati", "Kurnia Sari", "Luthfi Hakim", "Maesaroh", "Nanang Suryana",
+    "Oktaviana Sari", "Purnomo Adi", "Ridwan Kamil", "Suhartini", "Tri Wulandari",
+    "Umi Kulsum", "Vivi Yanti", "Wahyuningsih", "Yusuf Maulana", "Zainuddin",
+    "Agus Salim", "Bunga Citra", "Cecep Nurdin", "Dian Permatasari", "Edy Sutrisno",
+    "Faizah", "Gunadi", "Hartini", "Ida Farida", "Junaidi",
+    "Kasmawati", "Lukman Nulhakim", "Maisaroh", "Nurhayati", "Oki Setiana",
+    "Pipit Anggraini", "Rahmania", "Saiful Anwar", "Siti Halimah", "Teguh Santoso",
+    "Ujang Solihin", "Vina Melati", "Wawan Kurnia", "Yusnani", "Zulfikar",
+    "Aisyah Nur", "Bagus Prasetyo", "Cindy Lestari", "Darmawan", "Elly Rosana",
+    "Fauzan Akbar", "Gina Sonia", "Hendri Saputra", "Ikbal Maulana", "Jelita Sari",
+    "Kamaluddin", "Lisa Marlina", "Munawir", "Nadia Safitri", "Oscar Prabowo",
+    "Putri Amelia", "Rahmat Hidayat", "Samsul Bahri", "Tari Wulandari", "Umar Said",
+    "Valentina Dua", "Winda Astuti", "Yohana Mote", "Zubaidah", "Adi Nugroho",
+    "Brilian Saputra", "Catur Wibowo", "Desi Ratnasari", "Ely Suciati", "Fikri Haikal",
+    "Gadis Pramesti", "Hadi Susanto", "Ira Wulandari", "Joni Iskandar", "Kiki Amalia",
+    "Laksana Putra", "Mega Sari", "Niko Pratama", "Ovianti", "Prima Yudha",
+    "Rani Oktaviani", "Sandi Permana", "Tiara Anggraini", "Untung Prayitno", "Vino Bastian",
+    "Wulan Sari", "Yoga Pratama", "Zahra Aulia", "Alfin Syah", "Bimo Saputro",
+    "Cahaya Murni", "Dodi Prasetyo", "Erika Putri", "Fadli Ramadhan", "Gita Savitri",
 ]
 
 GELAR = {
@@ -203,10 +229,14 @@ for nama_sekolah, npsn, jenjang, kab, rombel, alamat, lat, lon, mapel_list, domi
                  f"({esc(uid('kebutuhan', nama_sekolah, mapel))}, {esc(uid('sekolah', nama_sekolah))}, {esc(mapel)}, {butuh}, {ada}) "
                  f"on conflict (sekolah_id, mapel) do update set jumlah_butuh = excluded.jumlah_butuh, jumlah_ada = excluded.jumlah_ada;")
         for k in range(ada):
-            nama_depan, _ = NAMA[nama_idx % len(NAMA)]
+            if nama_idx >= len(NAMA):
+                raise SystemExit(
+                    f"Nama guru tidak cukup: butuh {nama_idx + 1} nama, tersedia {len(NAMA)}. "
+                    "Tambahkan nama pada daftar NAMA."
+                )
+            nama_guru = f"{NAMA[nama_idx]}, {GELAR[mapel]}"
             nama_idx += 1
             urutan += 1
-            nama_guru = f"{nama_depan}, {GELAR[mapel]}"
             if k % 3 == 0:
                 status = "PNS"
             elif k % 3 == 1:

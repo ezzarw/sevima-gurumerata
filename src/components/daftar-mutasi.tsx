@@ -72,11 +72,11 @@ export function DaftarMutasi({ mutasi, bisaMemutuskan }: { mutasi: BarisMutasi[]
                   <div className="min-w-0">
                     <p className="text-[15px] font-medium">
                       <Link href={`/mutasi/${m.id}`} className="hover:underline">
-                        {m.guru_nama}
+                        {m.guru_nama} — {m.mapel}
                       </Link>
                     </p>
                     <p className="mt-0.5 text-[13px] text-teks-lembut">
-                      {m.mapel} · dari {m.sekolah_asal} ke {m.sekolah_tujuan}
+                      dari {m.sekolah_asal} ke {m.sekolah_tujuan}
                     </p>
                     <p className="mt-1 text-[12px] text-teks-lembut">
                       Diajukan {formatTanggal(m.created_at)} ·{" "}

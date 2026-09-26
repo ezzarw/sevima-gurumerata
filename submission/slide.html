@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>GuruMerata — Slide Submission SEMESTA 8</title>
+<style>
+  :root {
+    --inti: #17375e;
+    --inti-lembut: #eaeff6;
+    --aksen: #8a5300;
+    --teks: #1c2430;
+    --lembut: #5b6472;
+    --garis: #e4e6eb;
+    --latar: #f5f6f8;
+    --kekurangan: #b3261e;
+    --kelebihan: #1f6f4a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--latar);
+    color: var(--teks);
+    font-family: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+    line-height: 1.5;
+    padding: 24px 12px;
+  }
+  .slide {
+    width: 1123px; height: 794px; margin: 0 auto 20px; background: #fff;
+    border: 1px solid var(--garis); padding: 52px 60px;
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  .nomor { font-size: 12px; color: var(--lembut); letter-spacing: .06em; text-transform: uppercase; }
+  h1 { font-size: 46px; line-height: 1.12; letter-spacing: -.02em; }
+  h2 { font-size: 32px; line-height: 1.2; letter-spacing: -.01em; margin-bottom: 6px; }
+  h3 { font-size: 17px; margin-bottom: 4px; }
+  p, li { font-size: 16px; }
+  .kecil { font-size: 14px; color: var(--lembut); }
+  ul { padding-left: 20px; }
+  li { margin-bottom: 7px; }
+  .isi { flex: 1; margin-top: 26px; min-height: 0; }
+  .dua { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+  .tiga { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .kartu { border: 1px solid var(--garis); border-radius: 6px; padding: 18px 20px; }
+  .kartu.inti { background: var(--inti-lembut); border-color: #c9d6e6; }
+  .angka { font-size: 34px; font-weight: 600; line-height: 1.1; }
+  .merah { color: var(--kekurangan); }
+  .hijau { color: var(--kelebihan); }
+  .biru { color: var(--inti); }
+  .aksen { color: var(--aksen); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--garis); vertical-align: top; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--lembut); }
+  code { background: var(--latar); padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+  .tutup { justify-content: center; align-items: center; text-align: center; }
+  .tutup h1 { font-size: 58px; color: var(--inti); }
+  .garis-bawah { border-bottom: 3px solid var(--aksen); width: 76px; margin: 18px 0 22px; }
+  .peta-mini { position: relative; height: 250px; border: 1px solid var(--garis); border-radius: 6px; background: var(--latar); }
+  .titik { position: absolute; border-radius: 50%; border: 2px solid #fff; }
+  .legenda { display: flex; gap: 22px; font-size: 14px; margin-top: 12px; }
+  .legenda span { display: flex; align-items: center; gap: 7px; }
+  .tanda { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+  @media print {
+    body { padding: 0; background: #fff; }
+    .slide { margin: 0; border: 0; page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 1 COVER -->
+<section class="slide tutup">
+  <p class="nomor">Hackathon SEMESTA 8 · SDG 4 Pendidikan Berkualitas</p>
+  <h1 style="margin-top:14px">GuruMerata</h1>
+  <p style="font-size:22px; color:var(--lembut); margin-top:10px">Guru tepat, di tempat yang tepat.</p>
+  <div class="garis-bawah" style="margin-left:auto;margin-right:auto"></div>
+  <p style="font-size:17px">Aliezzar Wicaksono · Surabaya</p>
+  <p class="kecil" style="margin-top:8px">sevima-gurumerata.vercel.app · github.com/ezzarw/sevima-gurumerata</p>
+</section>
+
+<!-- 2 PROBLEM -->
+<section class="slide">
+  <p class="nomor">02 · Problem Statement</p>
+  <h2 style="margin-top:10px">Masalahnya bukan jumlah guru, tapi distribusinya</h2>
+  <div class="garis-bawah"></div>
+  <div class="isi">
+    <div class="tiga">
+      <div class="kartu">
+        <p class="kecil">Kekurangan</p>
+        <p class="angka merah">374.000</p>
+        <p class="kecil">guru di sekolah negeri</p>
+      </div>
+      <div class="kartu">
+        <p class="kecil">Kelebihan</p>
+        <p class="angka hijau">229.382</p>
+        <p class="kecil">guru di mapel tertentu</p>
+      </div>
+      <div class="kartu">
+        <p class="kecil">Data terpisah</p>
+        <p class="angka biru">3</p>
+        <p class="kecil">sistem: Dapodik, SIMPKB, InfoGTK</p>
+      </div>
+    </div>
+
+    <div class="kartu" style="margin-top:22px; border-left:4px solid var(--kekurangan)">
+      <h3 class="merah">Yang paling dirugikan: guru bersertifikasi</h3>
+      <p>Guru wajib mengajar minimal <strong>24 jam tatap muka per minggu</strong>. Kalau dipindah ke
+      sekolah yang jam mengajarnya sudah terisi, InfoGTK otomatis menghentikan <strong>TPG sekitar
+      Rp2 juta per bulan</strong>. Karena itu guru menolak dipindah, dan distribusi makin timpang.</p>
+    </div>
+
+    <p style="margin-top:20px"><strong>Pengguna:</strong> dinas pendidikan kabupaten/provinsi yang harus
+    memutuskan pemindahan guru tanpa tahu dampaknya lebih dulu.</p>
+  </div>
+</section>
+
+<!-- 3 SOLUSI -->
+<section class="slide">
+  <p class="nomor">03 · Solusi</p>
+  <h2 style="margin-top:10px">Tiga langkah sebelum satu guru dipindahkan</h2>
+  <div class="garis-bawah"></div>
+  <div class="isi dua">
+    <div>
+      <div class="kartu inti" style="margin-bottom:16px">
+        <h3>1. Lihat sebaran</h3>
+        <p>Peta per provinsi dengan status kekurangan, cukup, atau kelebihan guru, sampai ke
+        rincian per sekolah dan per mata pelajaran.</p>
+      </div>
+      <div class="kartu inti" style="margin-bottom:16px">
+        <h3>2. Simulasikan dulu</h3>
+        <p>Pilih guru dan sekolah tujuan, lalu sistem menghitung jam mengajar baru, status TPG,
+        jarak dari domisili, dan dampaknya ke sekolah asal.</p>
+      </div>
+      <div class="kartu inti">
+        <h3>3. Catat keputusannya</h3>
+        <p>Pengajuan, alasan guru, dan catatan keputusan dinas tersimpan. Mutasi yang disetujui
+        langsung memindahkan guru di basis data.</p>
+      </div>
+    </div>
+    <div>
+      <div class="kartu" style="height:100%">
+        <h3>Yang membedakan</h3>
+        <p style="margin-top:8px">Aplikasi lain menampilkan data guru. GuruMerata menjawab pertanyaan
+        yang sebenarnya menghambat mutasi: <em>"kalau guru ini saya pindahkan, TPG-nya masih aman?"</em></p>
+        <p style="margin-top:14px">Jawabannya diberikan <strong>sebelum</strong> keputusan diambil, bukan
+        setelah guru terlanjur pindah dan tunjangannya berhenti.</p>
+        <div class="kartu" style="margin-top:18px; background:var(--latar)">
+          <p class="kecil">Aturan yang dipakai</p>
+          <p style="font-size:15px; margin-top:4px">Jam mengajar baru &lt; 24 jam → <span class="merah">TPG berisiko hangus</span><br>
+          Jam mengajar baru ≥ 24 jam → <span class="hijau">TPG aman</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 DEMO 1 -->
+<section class="slide">
+  <p class="nomor">04 · Demo</p>
+  <h2 style="margin-top:10px">Peta sebaran: mana yang perlu perhatian</h2>
+  <div class="garis-bawah"></div>
+  <div class="isi dua">
+    <div>
+      <div class="peta-mini">
+        <span class="titik" style="left:20%; top:44%; width:44px; height:44px; background:var(--kekurangan)"></span>
+        <span class="titik" style="left:29%; top:64%; width:38px; height:38px; background:var(--kekurangan)"></span>
+        <span class="titik" style="left:12%; top:38%; width:40px; height:40px; background:var(--kelebihan)"></span>
+        <span class="titik" style="left:24%; top:52%; width:36px; height:36px; background:var(--kelebihan)"></span>
+        <span class="titik" style="left:41%; top:56%; width:34px; height:34px; background:var(--kekurangan)"></span>
+      </div>
+      <div class="legenda">
+        <span><i class="tanda" style="background:var(--kekurangan)"></i> Kekurangan guru</span>
+        <span><i class="tanda" style="background:var(--kelebihan)"></i> Kelebihan guru</span>
+      </div>
+    </div>
+    <div>
+      <table>
+        <thead><tr><th>Provinsi</th><th>Kurang</th><th>Lebih</th></tr></thead>
+        <tbody>
+          <tr><td>Nusa Tenggara Timur</td><td class="merah">5</td><td>0</td></tr>
+          <tr><td>Papua</td><td class="merah">4</td><td>0</td></tr>
+          <tr><td>Sulawesi Selatan</td><td class="merah">3</td><td>4</td></tr>
+          <tr><td>DKI Jakarta</td><td>0</td><td class="hijau">10</td></tr>
+          <tr><td>Jawa Barat</td><td>0</td><td class="hijau">10</td></tr>
+        </tbody>
+      </table>
+      <p class="kecil" style="margin-top:14px">Angka dihitung dari tabel <code>kebutuhan_guru</code>,
+      bukan nilai contoh. Polanya mengikuti temuan lapangan: kota besar kelebihan, daerah 3T kekurangan.</p>
+      <p class="kecil" style="margin-top:10px">Seluruh angka pada slide ini adalah data sintetis untuk
+      demo, bukan data resmi Dapodik/SIMPKB/InfoGTK.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5 DEMO 2 -->
+<section class="slide">
+  <p class="nomor">05 · Demo</p>
+  <h2 style="margin-top:10px">Simulator: jawaban sebelum keputusan</h2>
+  <div class="garis-bawah"></div>
+  <div class="isi dua">
+    <div class="kartu" style="border-left:4px solid var(--kelebihan); background:#e8f3ed">
+      <h3 class="hijau">Skenario aman</h3>
+      <p style="margin-top:8px"><strong>Sulastri, S.Pd</strong> (Matematika)<br>
+      SMAN 8 Jakarta → SMAN 1 Waingapu</p>
+      <table style="margin-top:12px">
+        <tr><td>Jam mengajar</td><td><strong>20 → 30 jam</strong></td></tr>
+        <tr><td>Status TPG</td><td class="hijau"><strong>Aman</strong></td></tr>
+        <tr><td>Jarak dari domisili</td><td>1.529 km</td></tr>
+        <tr><td>Skor psikologis</td><td>60/100 · berat</td></tr>
+      </table>
+      <p class="kecil" style="margin-top:10px">Sistem tetap memberi peringatan dampak psikologis
+      meski TPG aman.</p>
+    </div>
+    <div class="kartu" style="border-left:4px solid var(--kekurangan); background:#fbeae9">
+      <h3 class="merah">Skenario berisiko</h3>
+      <p style="margin-top:8px"><strong>Citra Ayu, S.Pd</strong> (Matematika)<br>
+      SDN Menteng 01 Pagi → SMP Negeri 2 Jakarta</p>
+      <table style="margin-top:12px">
+        <tr><td>Jam mengajar</td><td><strong>18 jam</strong></td></tr>
+        <tr><td>Status TPG</td><td class="merah"><strong>Berisiko hangus</strong></td></tr>
+        <tr><td>Sebab</td><td>Kurang 6 jam dari ambang 24</td></tr>
+        <tr><td>Formasi tujuan</td><td>5 guru untuk 3 formasi</td></tr>
+      </table>
+      <p class="kecil" style="margin-top:10px">Rekomendasi: jangan eksekusi, pertimbangkan mapel lain.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 6 DEMO 3 -->
+<section class="slide">
+  <p class="nomor">06 · Demo</p>
+  <h2 style="margin-top:10px">Asisten: AI yang memanggil data, bukan menebak</h2>
+  <div class="garis-bawah"></div>
+  <div class="isi">
+    <div class="kartu" style="background:var(--latar)">
+      <p class="kecil">Pertanyaan</p>
+      <p style="font-size:17px; margin-top:4px">"Sekolah mana yang paling butuh guru matematika di NTT?"</p>
+    </div>
+    <div class="kartu" style="margin-top:14px; border-left:4px solid var(--inti)">
+      <p class="kecil">Jawaban asisten</p>
+      <p style="margin-top:4px">"SMAN 1 Kupang butuh 2 guru Matematika. Ada 1 guru, butuh 3."</p>
+      <p class="kecil" style="margin-top:12px">Data yang dipanggil</p>
+      <p style="margin-top:4px"><code>cari_sekolah_kekurangan(mapel: Matematika, provinsi: Nusa Tenggara Timur)</code></p>
+    </div>
+    <div class="dua" style="margin-top:20px">
+      <div>
+        <h3>Empat aksi yang tersedia</h3>
+        <ul style="margin-top:8px">
+          <li><code>cari_sekolah_kekurangan</code> — sekolah mana yang butuh guru</li>
+          <li><code>cari_guru_kelebihan</code> — guru yang TPG-nya rawan berhenti</li>
+          <li><code>simulasi_mutasi</code> — hitung dampak pemindahan</li>
+          <li><code>cek_tpg</code> — apakah TPG tetap aman</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Kenapa ini bukan chatbot biasa</h3>
+        <ul style="margin-top:8px">
+          <li>Setiap angka berasal dari pemanggilan data, tidak dikarang</li>
+          <li>Parameter menerima nama maupun id; kalau nama ambigu, asisten meminta dipilih</li>
+          <li>Daftar tool yang dipanggil ditampilkan sebagai bukti</li>
+          <li>Nama sekolah atau guru yang tidak ada tidak akan dijawab dengan dugaan</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 TEKNIS -->
+<section class="slide">
+  <p class="nomor">07 · Tech Stack & Keputusan</p>
+  <h2 style="margin-top:10px">Tumpukan teknologi dan satu keputusan sendiri</h2>
+  <div class="garis-bawah"></div>
+  <div class="isi dua">
+    <div>
+      <table>
+        <tr><th>Bagian</th><th>Pilihan</th></tr>
+        <tr><td>Kerangka</td><td>Next.js 16 App Router, TypeScript</td></tr>
+        <tr><td>Antarmuka</td><td>Tailwind CSS v4, Leaflet, Recharts</td></tr>
+        <tr><td>Data</td><td>Supabase: Postgres, Auth, RLS, Realtime</td></tr>
+        <tr><td>Asisten</td><td>Endpoint gaya OpenAI + function calling</td></tr>
+        <tr><td>Uji</td><td>Vitest, cakupan 96,90% (ambang 80%)</td></tr>
+        <tr><td>Kirim</td><td>Docker, GitHub Actions, Vercel</td></tr>
+      </table>
+      <p class="kecil" style="margin-top:14px">Asisten memakai format OpenAI-compatible, bukan SDK
+      khusus, supaya penyedianya bisa ditukar tanpa mengubah kode.</p>
+    </div>
+    <div class="kartu inti">
+      <h3 class="biru">Keputusan: satu sumber kebenaran untuk aturan 24 jam</h3>
+      <p style="margin-top:10px">Aturan 24 jam TPG hanya ditulis sekali, di
+      <code>src/lib/domain/logika.ts</code>, lalu dipakai bersama oleh:</p>
+      <ul style="margin-top:8px">
+        <li>antarmuka peta, daftar, dan simulator</li>
+        <li>aksi server saat menyetujui mutasi</li>
+        <li>generator data contoh (Python membaca tabel yang sama)</li>
+        <li>keempat tool asisten</li>
+        <li>unit test</li>
+      </ul>
+      <p style="margin-top:12px">Akibatnya angka di peta, simulator, jawaban asisten, dan hasil uji
+      tidak mungkin berbeda satu sama lain. Bila aturannya berubah, satu tempat itu yang diubah.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 8 CHALLENGE -->
+<section class="slide">
+  <p class="nomor">08 · Challenge Point</p>
+  <h2 style="margin-top:10px">Challenge yang dikerjakan dan buktinya</h2>
+  <div class="garis-bawah"></div>
+  <div class="isi">
+    <table>
+      <thead><tr><th>Challenge</th><th>Poin</th><th>Bukti</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Integrasi AI Agent Fungsional</td><td>+10</td>
+          <td>Halaman <code>/asisten</code>, empat tool, dipanggil nyata di video</td>
+        </tr>
+        <tr>
+          <td>Deploy &amp; CI/CD Pipeline &amp; Docker</td><td>+8</td>
+          <td>Live di sevima-gurumerata.vercel.app, <code>Dockerfile</code> tiga tahap, CI GitHub Actions hijau</td>
+        </tr>
+        <tr>
+          <td>Fitur Real-time</td><td>+8</td>
+          <td>Halaman <code>/mutasi</code>: dua tab, satu menyetujui, tab lain berubah tanpa muat ulang</td>
+        </tr>
+        <tr>
+          <td>Unit testing dan cakupan &gt; 80%</td><td>+6</td>
+          <td>96,90% statements / 91,36% branches, ambang 80% di <code>vitest.config.ts</code></td>
+        </tr>
+        <tr>
+          <td>Database &amp; Persistensi</td><td>+2</td>
+          <td>Supabase Postgres, RLS per peran, mutasi disetujui benar-benar mengubah data guru</td>
+        </tr>
+        <tr>
+          <td>Autentikasi Pengguna</td><td>+2</td>
+          <td>Supabase Auth, tiga peran, penjaga rute di <code>proxy.ts</code></td>
+        </tr>
+        <tr>
+          <td>Multi-platform / Responsive</td><td>+2</td>
+          <td>Diuji di 390 px: tanpa gulir horizontal</td>
+        </tr>
+        <tr>
+          <td>Aksesibilitas</td><td>+2</td>
+          <td>Kontras WCAG AA diuji terukur, navigasi papan tuntas, label ARIA</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 9 HAMBATAN -->
+<section class="slide">
+  <p class="nomor">09 · Tantangan & Solusi</p>
+  <h2 style="margin-top:10px">Empat celah keamanan yang ditemukan sendiri</h2>
+  <div class="garis-bawah"></div>
+  <div class="isi">
+    <p>Setelah aplikasi berjalan, saya tidak berhenti di "sudah bisa dipakai". Saya menguji
+    backend-nya dengan permintaan sungguhan ke API. Empat celah RLS terbuka.</p>
+    <table style="margin-top:16px">
+      <thead><tr><th>Celah</th><th>Terbukti</th><th>Perbaikan</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong class="merah">Kritis</strong> — guru bisa naikkan peran jadi admin</td>
+          <td>PATCH peran → 200, jadi <code>admin_dinas</code></td>
+          <td>Trigger <code>before update</code> menolak perubahan peran bila pelakunya bukan admin</td>
+        </tr>
+        <tr>
+          <td><strong>Tinggi</strong> — pendaftar bebas pilih peran</td>
+          <td>Signup <code>peran=admin_dinas</code> langsung tersimpan</td>
+          <td>Peran pendaftaran dikunci ke <code>guru</code></td>
+        </tr>
+        <tr>
+          <td><strong>Sedang</strong> — log aktivitas bisa dipalsukan</td>
+          <td><code>with check (true)</code> menerima apa pun</td>
+          <td>Dibatasi <code>auth.uid() = user_id</code></td>
+        </tr>
+        <tr>
+          <td><strong>Sedang</strong> — data guru terbaca tanpa login</td>
+          <td>171 guru terbaca dengan anon key</td>
+          <td>Hak <code>anon</code> atas kedua view dicabut</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin-top:16px">Setelah perbaikan, diuji ulang: naik peran <strong>ditolak 403</strong>,
+    dan ketiga akun demo tetap berjalan normal dengan RLS per peran. Satu detail penting: penjagaan
+    ditaruh di trigger, bukan policy, karena policy UPDATE di Postgres tidak bisa membandingkan nilai
+    lama dan baru sebuah kolom.</p>
+  </div>
+</section>
+
+<!-- 10 RENCANA -->
+<section class="slide">
+  <p class="nomor">10 · Rencana ke Depan</p>
+  <h2 style="margin-top:10px">Satu hal yang paling konkret berikutnya</h2>
+  <div class="garis-bawah"></div>
+  <div class="isi">
+    <div class="kartu inti">
+      <h3 class="biru">Riwayat perubahan per kolom untuk tabel guru dan sekolah</h3>
+      <p style="margin-top:10px">Satu keputusan mutasi mengubah jam mengajar banyak guru sekaligus.
+      Sekarang yang tercatat hanya keputusan mutasinya, belum perubahan tiap baris guru.</p>
+      <p style="margin-top:10px"><strong>Kenapa ini diprioritaskan:</strong> saat ada sengketa TPG,
+      dinas harus bisa menunjukkan siapa mengubah apa dan kapan. Tanpa jejak per baris, pertanyaan
+      "kok jam mengajar saya berubah?" tidak bisa dijawab.</p>
+      <p style="margin-top:10px"><strong>Cara:</strong> tabel <code>log_perubahan</code> dengan trigger
+      <code>after update</code> pada <code>guru</code> dan <code>sekolah</code>, menyimpan nilai lama,
+      nilai baru, pelaku, dan waktu. Pola yang sama dengan penjagaan peran yang sudah dipakai.</p>
+    </div>
+    <p class="kecil" style="margin-top:22px">Karya ini dibuat selama Hackathon SEMESTA 8.
+    Data pada aplikasi adalah data sintetis untuk demo, bukan data resmi
+    Dapodik, SIMPKB, atau InfoGTK.</p>
+  </div>
+</section>
+
+</body>
+</html>

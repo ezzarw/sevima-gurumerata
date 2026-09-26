@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   formatAngka,
+  labelIdentitas,
   formatTanggal,
   formatWaktuLengkap,
   LABEL_ALASAN_MUTASI,
@@ -72,5 +73,39 @@ describe("label istilah domain", () => {
   it("memakai istilah berbahasa Indonesia, bukan nama kolom", () => {
     expect(LABEL_STATUS_MUTASI.diajukan).toBe("Menunggu review dinas");
     expect(LABEL_ALASAN_MUTASI.keluarga).toBe("Alasan keluarga");
+  });
+});
+
+describe("labelIdentitas", () => {
+  it("memakai NIP untuk guru ASN yang punya NIP", () => {
+    expect(labelIdentitas({ status_kepegawaian: "PNS", nip: "197805122006041002", nuptk: null })).toBe(
+      "NIP 197805122006041002",
+    );
+    expect(labelIdentitas({ status_kepegawaian: "PPPK", nip: "198203152010012003", nuptk: null })).toBe(
+      "NIP 198203152010012003",
+    );
+  });
+
+  it("memakai NUPTK untuk guru honorer, bukan NIP", () => {
+    expect(labelIdentitas({ status_kepegawaian: "Honorer", nip: null, nuptk: "1234567890123456" })).toBe(
+      "NUPTK 1234567890123456",
+    );
+  });
+
+  it("tidak menulis NIP kosong untuk guru honorer", () => {
+    // Guru honorer memang tidak punya NIP, jadi jangan ditulis "belum terdata".
+    const label = labelIdentitas({ status_kepegawaian: "Honorer", nip: null, nuptk: "9999888877776666" });
+    expect(label).not.toContain("NIP");
+    expect(label).toContain("NUPTK");
+  });
+
+  it("menyebut belum terdata bila ASN tanpa NIP", () => {
+    expect(labelIdentitas({ status_kepegawaian: "PNS", nip: null, nuptk: "1111" })).toBe("NIP belum terdata");
+  });
+
+  it("menyebut belum terdata bila honorer tanpa NUPTK", () => {
+    expect(labelIdentitas({ status_kepegawaian: "Honorer", nip: null, nuptk: null })).toBe(
+      "NUPTK belum terdata",
+    );
   });
 });

@@ -44,3 +44,21 @@ export const LABEL_STATUS_MUTASI: Record<string, string> = {
 export function ringkasSebaran(kurang: number, lebih: number): string {
   return `kurang ${formatAngka(kurang)} · lebih ${formatAngka(lebih)}`;
 }
+
+/**
+ * Identitas kepegawaian yang ditampilkan: ASN punya NIP, guru honorer tidak.
+ * Sebelumnya semua baris tanpa NIP ditulis "NIP belum terdata", padahal guru
+ * honorer memang tidak punya NIP dan identitasnya NUPTK. Label yang salah
+ * membuat data yang lengkap terlihat kosong.
+ */
+export function labelIdentitas(guru: {
+  status_kepegawaian: string;
+  nip?: string | null;
+  nuptk?: string | null;
+}): string {
+  const asn = guru.status_kepegawaian === "PNS" || guru.status_kepegawaian === "PPPK";
+  if (asn) {
+    return guru.nip ? `NIP ${guru.nip}` : "NIP belum terdata";
+  }
+  return guru.nuptk ? `NUPTK ${guru.nuptk}` : "NUPTK belum terdata";
+}
