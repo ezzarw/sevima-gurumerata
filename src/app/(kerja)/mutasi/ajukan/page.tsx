@@ -1,45 +1,45 @@
 import { Suspense } from "react";
-import Link from "next/link";
 import { KeadaanGagal, KeadaanKosong, KeadaanMemuat } from "@/components/keadaan";
 import { JudulHalaman } from "@/components/shell";
+import Link from "next/link";
 import { FormAjukanMutasi } from "@/components/form-mutasi";
+import { ambilAman } from "@/lib/data/ambil";
 import { ambilGuru, ambilSekolah } from "@/lib/data/kueri";
 
 export const metadata = { title: "Ajukan mutasi · GuruMerata" };
 
-async function IsiForm({
-  guruAwal,
-  tujuanAwal,
-}: {
-  guruAwal: string;
-  tujuanAwal: string;
-}) {
-  try {
+async function IsiForm({ guruAwal, tujuanAwal }: { guruAwal: string; tujuanAwal: string }) {
+  const hasil = await ambilAman(async () => {
     const [guru, sekolah] = await Promise.all([ambilGuru(), ambilSekolah()]);
-    if (guru.length === 0 || sekolah.length === 0) {
-      return (
-        <KeadaanKosong
-          judul="Data guru dan sekolah belum tersedia"
-          keterangan="Pengajuan butuh data guru dan sekolah. Jalankan supabase/seed.sql lebih dulu."
-        />
-      );
-    }
-    return (
-      <FormAjukanMutasi
-        guru={guru}
-        sekolah={sekolah}
-        guruAwal={guruAwal}
-        tujuanAwal={tujuanAwal}
-      />
-    );
-  } catch (galat) {
+    return { guru, sekolah };
+  });
+
+  if (!hasil.ok) {
     return (
       <KeadaanGagal
         keterangan="Formulir pengajuan tidak bisa memuat data. Periksa koneksi lalu muat ulang halaman."
-        detail={galat instanceof Error ? galat.message : undefined}
+        detail={hasil.pesan}
       />
     );
   }
+
+  if (hasil.data.guru.length === 0 || hasil.data.sekolah.length === 0) {
+    return (
+      <KeadaanKosong
+        judul="Data guru dan sekolah belum tersedia"
+        keterangan="Pengajuan butuh data guru dan sekolah. Jalankan supabase/seed.sql lebih dulu."
+      />
+    );
+  }
+
+  return (
+    <FormAjukanMutasi
+      guru={hasil.data.guru}
+      sekolah={hasil.data.sekolah}
+      guruAwal={guruAwal}
+      tujuanAwal={tujuanAwal}
+    />
+  );
 }
 
 export default async function HalamanAjukan({

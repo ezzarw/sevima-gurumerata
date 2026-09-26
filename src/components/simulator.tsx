@@ -15,23 +15,6 @@ import { cn } from "@/lib/utils";
 const KELAS_BIDANG =
   "w-full rounded-kartu border border-garis-tegas bg-permukaan px-3 py-2 text-[14px]";
 
-interface Masukan {
-  guru: {
-    id: string;
-    nama: string;
-    mapel: string;
-    sertifikasi: boolean;
-    statusKepegawaian: "PNS" | "PPPK" | "Honorer";
-    jamNgajar: number;
-    sekolahId: string;
-    domisili: string;
-  };
-  sekolahAsal: BarisSekolah;
-  sekolahTujuan: BarisSekolah;
-  kebutuhanAsal: BarisKebutuhan[];
-  kebutuhanTujuan: BarisKebutuhan[];
-}
-
 /**
  * Simulator mutasi: hitung jam mengajar baru dan status TPG sebelum mutasi
  * dieksekusi. Seluruh perhitungan memakai fungsi domain yang sama dengan

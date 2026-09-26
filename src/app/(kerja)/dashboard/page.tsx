@@ -3,28 +3,33 @@ import { KeadaanGagal, KeadaanKosong, KeadaanMemuat } from "@/components/keadaan
 import { Kartu, KartuStatistik } from "@/components/kartu";
 import { JudulHalaman } from "@/components/shell";
 import { PanelSebaran } from "@/components/panel-sebaran";
+import { ambilAman } from "@/lib/data/ambil";
 import { ambilKebutuhan, ambilSekolah, ambilWilayah, ambilMutasi } from "@/lib/data/kueri";
 import { formatAngka, ringkasSebaran } from "@/lib/data/format";
 
 export const metadata = { title: "Peta sebaran · GuruMerata" };
 
 async function IsiDashboard() {
-  let wilayah, sekolah, kebutuhan, mutasi;
-  try {
-    [wilayah, sekolah, kebutuhan, mutasi] = await Promise.all([
+  const hasil = await ambilAman(async () => {
+    const [wilayah, sekolah, kebutuhan, mutasi] = await Promise.all([
       ambilWilayah(),
       ambilSekolah(),
       ambilKebutuhan(),
       ambilMutasi(),
     ]);
-  } catch (galat) {
+    return { wilayah, sekolah, kebutuhan, mutasi };
+  });
+
+  if (!hasil.ok) {
     return (
       <KeadaanGagal
         keterangan="Dashboard tidak bisa memuat data sekolah dan guru. Periksa koneksi ke Supabase, lalu muat ulang halaman."
-        detail={galat instanceof Error ? galat.message : undefined}
+        detail={hasil.pesan}
       />
     );
   }
+
+  const { wilayah, sekolah, kebutuhan, mutasi } = hasil.data;
 
   if (wilayah.length === 0) {
     return (

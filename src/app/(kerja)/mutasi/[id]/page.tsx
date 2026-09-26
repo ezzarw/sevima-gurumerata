@@ -8,7 +8,7 @@ import { FormKeputusan } from "@/components/form-mutasi";
 import { JudulHalaman } from "@/components/shell";
 import { siapkanSimulasi } from "@/lib/data/kueri";
 import { buatKlienServer } from "@/lib/supabase/server";
-import { formatTanggal, formatWaktuLengkap, LABEL_ALASAN_MUTASI } from "@/lib/data/format";
+import { formatWaktuLengkap, LABEL_ALASAN_MUTASI } from "@/lib/data/format";
 import { simulasiMutasi } from "@/lib/domain/logika";
 import type { HasilSimulasi, StatusMutasi } from "@/lib/domain/tipe";
 
