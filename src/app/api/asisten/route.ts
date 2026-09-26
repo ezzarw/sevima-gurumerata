@@ -1,3 +1,4 @@
+import { bacaBalasan, type BalasanModel, type PanggilanTool } from "@/lib/asisten/balasan";
 import { DEFINISI_TOOLS, jalankanTool, muatDataAsisten } from "@/lib/asisten/tools";
 
 export const runtime = "nodejs";
@@ -15,12 +16,6 @@ interface Pesan {
   tool_call_id?: string;
 }
 
-interface PanggilanTool {
-  id: string;
-  type: "function";
-  function: { name: string; arguments: string };
-}
-
 const PROMPT_SISTEM = `Kamu adalah asisten analitis GuruMerata untuk dinas pendidikan Indonesia.
 Tugasmu menjawab pertanyaan sebaran guru dan dampak mutasi.
 
@@ -31,79 +26,6 @@ Aturan:
 4. Jawab ringkas dalam bahasa Indonesia, maksimal 150 kata. Pakai kalimat biasa, bukan tabel markdown.
 5. Sebutkan nama sekolah atau nama guru yang relevan beserta angkanya.
 6. Bila tool mengembalikan hasil kosong, katakan terus terang bahwa tidak ada data yang cocok, jangan menawarkan dugaan.`;
-
-interface BalasanModel {
-  content: string;
-  tool_calls: PanggilanTool[];
-}
-
-/**
- * Sebagian endpoint gaya OpenAI membalas dengan text/event-stream walaupun
- * stream tidak diminta. Pembaca ini menangani dua bentuk balasan: JSON biasa
- * dan SSE, termasuk potongan argumen tool_calls yang datang bertahap.
- */
-async function bacaBalasan(respons: Response): Promise<BalasanModel> {
-  const tipe = respons.headers.get("content-type") ?? "";
-  const mentah = await respons.text();
-
-  if (!tipe.includes("event-stream") && !mentah.trimStart().startsWith("data:")) {
-    const data = JSON.parse(mentah);
-    const pesan = data.choices?.[0]?.message;
-    if (!pesan) throw new Error("Endpoint asisten tidak mengembalikan pilihan jawaban.");
-    return { content: pesan.content ?? "", tool_calls: pesan.tool_calls ?? [] };
-  }
-
-  let content = "";
-  const panggilan = new Map<number, { id: string; name: string; arguments: string }>();
-
-  for (const baris of mentah.split("\n")) {
-    if (!baris.startsWith("data:")) continue;
-    const isi = baris.slice(5).trim();
-    if (isi === "" || isi === "[DONE]") continue;
-
-    let potongan: {
-      choices?: {
-        delta?: {
-          content?: string | null;
-          tool_calls?: {
-            index?: number;
-            id?: string;
-            function?: { name?: string; arguments?: string };
-          }[];
-        };
-      }[];
-    };
-    try {
-      potongan = JSON.parse(isi);
-    } catch {
-      continue;
-    }
-
-    const delta = potongan.choices?.[0]?.delta;
-    if (!delta) continue;
-    if (delta.content) content += delta.content;
-
-    for (const tc of delta.tool_calls ?? []) {
-      const indeks = tc.index ?? 0;
-      const sekarang = panggilan.get(indeks) ?? { id: "", name: "", arguments: "" };
-      if (tc.id) sekarang.id = tc.id;
-      if (tc.function?.name) sekarang.name += tc.function.name;
-      if (tc.function?.arguments) sekarang.arguments += tc.function.arguments;
-      panggilan.set(indeks, sekarang);
-    }
-  }
-
-  return {
-    content,
-    tool_calls: [...panggilan.entries()]
-      .sort((a, b) => a[0] - b[0])
-      .map(([indeks, nilai]) => ({
-        id: nilai.id || `panggilan-${indeks}`,
-        type: "function" as const,
-        function: { name: nilai.name, arguments: nilai.arguments },
-      })),
-  };
-}
 
 async function panggilModel(pesan: Pesan[]): Promise<BalasanModel> {
   const respons = await fetch(`${BASE_URL}/chat/completions`, {
@@ -127,7 +49,7 @@ async function panggilModel(pesan: Pesan[]): Promise<BalasanModel> {
     const teks = await respons.text();
     throw new Error(`Endpoint asisten menolak permintaan (${respons.status}): ${teks.slice(0, 300)}`);
   }
-  return bacaBalasan(respons);
+  return bacaBalasan(await respons.text(), respons.headers.get("content-type") ?? "");
 }
 
 export async function POST(permintaan: Request) {

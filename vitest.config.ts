@@ -23,6 +23,11 @@ export default defineConfig({
         "src/lib/supabase/**",
         "src/lib/data/kueri.ts",
         "src/lib/data/eksekusi.ts",
+        // Batas HTTP: route hanya merangkai permintaan dan balasan, tanpa
+        // logika bisnis. Logikanya, termasuk pembacaan balasan model, ada di
+        // src/lib/asisten dan diuji di sana. Route ini diuji manual lewat
+        // halaman /asisten, dan buktinya ada di video demo.
+        "src/app/api/**/route.ts",
         "**/*.d.ts",
         "**/*.test.ts",
       ],

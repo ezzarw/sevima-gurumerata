@@ -129,6 +129,31 @@ function kata(nilai: unknown): string {
   return typeof nilai === "string" ? nilai.trim().toLowerCase() : "";
 }
 
+/**
+ * Hasil penyaringan wilayah. `diberiPenyaring` dipisahkan dari daftarnya,
+ * karena "tidak menyebut provinsi" dan "menyebut provinsi yang tidak ada"
+ * harus berakhir berbeda: yang pertama berarti semua provinsi, yang kedua
+ * berarti tidak ada hasil sama sekali.
+ */
+interface HasilProvinsi {
+  diberiPenyaring: boolean;
+  daftar: Wilayah[];
+  namaCocok: Set<string>;
+}
+
+function saringProvinsi(nama: unknown, wilayah: Wilayah[]): HasilProvinsi {
+  const kataKunci = kata(nama);
+  if (!kataKunci) {
+    return { diberiPenyaring: false, daftar: wilayah, namaCocok: new Set() };
+  }
+  const cocok = cocokProvinsi(kataKunci, wilayah);
+  return {
+    diberiPenyaring: true,
+    daftar: cocok,
+    namaCocok: new Set(cocok.map((w) => w.nama)),
+  };
+}
+
 function cocokProvinsi(nama: unknown, wilayah: Wilayah[]): Wilayah[] {
   const kataKunci = kata(nama);
   if (!kataKunci) return wilayah;
@@ -226,13 +251,12 @@ export async function jalankanTool(
 ): Promise<unknown> {
   switch (nama) {
     case "cari_sekolah_kekurangan": {
-      const provinsi = cocokProvinsi(argumen.provinsi, data.wilayah);
-      const namaProvinsi = new Set(provinsi.map((p) => p.nama));
+      const provinsi = saringProvinsi(argumen.provinsi, data.wilayah);
       const mapelSah = cocokMapel(argumen.mapel, [...new Set(data.kebutuhan.map((k) => k.mapel))]);
 
       const hasil = data.kebutuhan
         .filter((k) => k.kurang > 0)
-        .filter((k) => namaProvinsi.size === 0 || namaProvinsi.has(k.provinsi_nama))
+        .filter((k) => !provinsi.diberiPenyaring || provinsi.namaCocok.has(k.provinsi_nama))
         .filter((k) => mapelSah.includes(k.mapel))
         .sort((a, b) => b.kurang - a.kurang || a.sekolah_nama.localeCompare(b.sekolah_nama, "id"))
         .slice(0, batasi(argumen.batas))
@@ -252,20 +276,19 @@ export async function jalankanTool(
       return {
         provinsi_ditanyakan: (argumen.provinsi as string) ?? "semua provinsi",
         mapel_ditanyakan: (argumen.mapel as string) ?? "semua mapel",
-        provinsi_cocok: provinsi.map((p) => p.nama),
+        provinsi_cocok: provinsi.daftar.map((p) => p.nama),
         jumlah_ditemukan: hasil.length,
         sekolah: hasil,
       };
     }
 
     case "cari_guru_kelebihan": {
-      const provinsi = cocokProvinsi(argumen.provinsi, data.wilayah);
-      const namaProvinsi = new Set(provinsi.map((p) => p.nama));
+      const provinsi = saringProvinsi(argumen.provinsi, data.wilayah);
       const mapelSah = cocokMapel(argumen.mapel, [...new Set(data.guru.map((g) => g.mapel))]);
 
       const hasil = data.guru
         .filter((g) => g.jam_ngajar < 24)
-        .filter((g) => namaProvinsi.size === 0 || namaProvinsi.has(g.provinsi_nama))
+        .filter((g) => !provinsi.diberiPenyaring || provinsi.namaCocok.has(g.provinsi_nama))
         .filter((g) => mapelSah.includes(g.mapel))
         .sort((a, b) => a.jam_ngajar - b.jam_ngajar || a.nama.localeCompare(b.nama, "id"))
         .slice(0, batasi(argumen.batas))
@@ -285,7 +308,7 @@ export async function jalankanTool(
       return {
         provinsi_ditanyakan: (argumen.provinsi as string) ?? "semua provinsi",
         mapel_ditanyakan: (argumen.mapel as string) ?? "semua mapel",
-        provinsi_cocok: provinsi.map((p) => p.nama),
+        provinsi_cocok: provinsi.daftar.map((p) => p.nama),
         ambang_jam: 24,
         jumlah_ditemukan: hasil.length,
         guru: hasil,

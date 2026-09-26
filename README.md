@@ -74,17 +74,21 @@ Cakupan terakhir, dijalankan dengan `npm run test:coverage`:
 | Berkas | Statements | Branches | Functions | Lines |
 |---|---|---|---|---|
 | `src/lib/domain/logika.ts` | 99,14% | 95,00% | 100% | 100% |
+| `src/lib/asisten/tools.ts` | 94,21% | 87,00% | 97,22% | 98,01% |
+| `src/lib/asisten/balasan.ts` | 97,22% | 94,11% | 100% | 100% |
 | `src/lib/data/format.ts` | 100% | 100% | 100% | 100% |
+| `src/lib/data/ambil.ts` | 100% | 100% | 100% | 100% |
 | `src/lib/utils.ts` | 100% | 100% | 100% | 100% |
-| `src/lib/domain/tipe.ts` | 100% | 100% | 100% | 100% |
-| **Total** | **99,23%** | **95,23%** | **100%** | **100%** |
+| **Total** | **96,90%** | **91,36%** | **98,36%** | **99,20%** |
 
 Ambang minimum di `vitest.config.ts` adalah 80% untuk keempat ukuran, dan
 `npm run test:coverage` akan gagal bila ada yang turun di bawahnya.
 
 Yang diuji adalah logika bisnis, bukan tampilan: `hitungKekuranganGuru()`,
 `cekTPG()` (termasuk kasus tepat 24 jam), `simulasiMutasi()`, `hitungJarakKm()`,
-`hitungDampakPsikologis()`, serta pemformatan angka dan istilah domain.
+`hitungDampakPsikologis()`, pemformatan angka dan istilah domain, keempat tool
+asisten beserta penanganan nama yang ambigu, dan pembacaan balasan model dalam
+bentuk JSON maupun text/event-stream.
 
 ## Struktur
 
