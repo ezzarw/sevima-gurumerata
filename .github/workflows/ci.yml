@@ -1,0 +1,81 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  mutu:
+    name: Lint, tipe, test, dan build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Pasang dependensi
+        run: npm ci
+
+      - name: Periksa gaya penulisan
+        run: npm run lint
+
+      - name: Periksa tipe
+        run: npm run typecheck
+
+      - name: Jalankan unit test dengan cakupan
+        run: npm run test:coverage
+
+      - name: Unggah laporan cakupan
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/
+          retention-days: 7
+
+      - name: Build produksi
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+  docker:
+    name: Bangun citra Docker
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Bangun citra
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          load: true
+          tags: gurumerata:ci
+          build-args: |
+            NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+            NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+      - name: Pastikan kontainer hidup dan melayani halaman masuk
+        run: |
+          docker run -d --name gurumerata-ci -p 3000:3000 \
+            -e NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }} \
+            -e NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }} \
+            gurumerata:ci
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:3000/masuk > /dev/null; then
+              echo "Aplikasi melayani /masuk"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Aplikasi tidak siap dalam 60 detik"
+          docker logs gurumerata-ci
+          exit 1

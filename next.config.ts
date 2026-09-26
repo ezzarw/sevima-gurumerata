@@ -1,8 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Peta dirender di klien dengan Leaflet; tidak ada konfigurasi khusus,
-  // tetapi bagian ini disimpan agar penyesuaian berikutnya punya tempat.
+  // "standalone" menghasilkan server mandiri tanpa node_modules penuh,
+  // sehingga citra Docker hanya membawa yang benar-benar dipakai.
+  output: "standalone",
   reactStrictMode: true,
 };
 
