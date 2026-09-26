@@ -5,7 +5,8 @@ import { useActionState } from "react";
 import { batalkanMutasi, type HasilAksi } from "@/app/(kerja)/mutasi/aksi";
 import { LencanaStatusMutasi } from "@/components/lencana-mutasi";
 import { Kartu } from "@/components/kartu";
-import { formatTanggal, LABEL_ALASAN_MUTASI } from "@/lib/data/format";
+import { formatTanggal, formatWaktuLengkap, LABEL_ALASAN_MUTASI } from "@/lib/data/format";
+import { useMutasiRealtime } from "@/components/use-mutasi-realtime";
 import type { BarisMutasi } from "@/lib/data/kueri";
 
 const AWAL: HasilAksi = {};
@@ -14,6 +15,7 @@ const URUTAN = ["diajukan", "disetujui", "ditolak", "dibatalkan"] as const;
 
 export function DaftarMutasi({ mutasi, bisaMemutuskan }: { mutasi: BarisMutasi[]; bisaMemutuskan: boolean }) {
   const [hasil, aksi] = useActionState(batalkanMutasi, AWAL);
+  const { terhubung, peristiwaTerakhir, galat } = useMutasiRealtime();
 
   if (mutasi.length === 0) return null;
 
@@ -24,6 +26,25 @@ export function DaftarMutasi({ mutasi, bisaMemutuskan }: { mutasi: BarisMutasi[]
 
   return (
     <div className="space-y-5">
+      <p
+        role="status"
+        aria-live="polite"
+        className="flex flex-wrap items-center gap-2 text-[13px] text-teks-lembut"
+      >
+        <span
+          aria-hidden
+          className={terhubung ? "size-2 rounded-full bg-kelebihan" : "size-2 rounded-full bg-garis-tegas"}
+        />
+        {galat
+          ? `Pembaruan langsung bermasalah: ${galat}`
+          : terhubung
+            ? "Terhubung ke pembaruan langsung. Perubahan pengajuan dari pengguna lain muncul di sini tanpa muat ulang."
+            : "Menghubungkan ke pembaruan langsung…"}
+        {peristiwaTerakhir
+          ? ` Perubahan ${peristiwaTerakhir.jenis.toLowerCase()} diterima ${formatWaktuLengkap(peristiwaTerakhir.waktu.toISOString())}.`
+          : ""}
+      </p>
+
       {hasil.pesan ? (
         <p role="status" className="rounded-kartu border border-kelebihan/30 bg-kelebihan-lembut px-3 py-2 text-[13px] text-kelebihan">
           {hasil.pesan}
