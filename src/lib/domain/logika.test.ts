@@ -261,6 +261,11 @@ describe("simulasiMutasi", () => {
   it("menghitung jam ngajar baru, TPG aman, dan rekomendasi hijau", () => {
     const hasil = simulasiMutasi(
       input({
+        sekolahAsal: {
+          ...input().sekolahAsal,
+          jumlahGuruMapel: 3,
+          kebutuhanMapel: { mapel: "Matematika", jumlahButuh: 3, jumlahAda: 3 },
+        },
         sekolahTujuan: {
           id: "s-4",
           nama: "SMP Negeri 4 Kupang",
@@ -281,10 +286,11 @@ describe("simulasiMutasi", () => {
     expect(hasil.tpg.aman).toBe(true);
     expect(hasil.kebutuhan.status).toBe("kekurangan");
     expect(hasil.psikologis.kategori).toBe("ringan");
-    // Sekolah asal hanya punya 2 guru mapel, jadi sisa 1 guru menanggung 40 jam.
-    expect(hasil.rekomendasi.tingkat).toBe("perhatian");
+    // Sekolah asal: sisa 2 guru menanggung 36 jam, masih di bawah ambang kewaspadaan.
+    expect(hasil.sekolahAsal.jumlahGuruSetelah).toBe(2);
+    expect(hasil.sekolahAsal.peringatan).toBeNull();
+    expect(hasil.rekomendasi.tingkat).toBe("aman");
     expect(hasil.rekomendasi.alasan.join(" ")).toContain("menutup kebutuhan");
-    expect(hasil.rekomendasi.saran.join(" ")).toContain("Siapkan pengganti");
   });
 
   it("TPG aman tapi pindah lintas pulau tetap diberi status perhatian", () => {
@@ -350,6 +356,11 @@ describe("simulasiMutasi", () => {
     const hasil = simulasiMutasi(
       input({
         guru: { ...guruSertifikasi, sertifikasi: false, statusKepegawaian: "Honorer" },
+        sekolahAsal: {
+          ...input().sekolahAsal,
+          jumlahGuruMapel: 3,
+          kebutuhanMapel: { mapel: "Matematika", jumlahButuh: 3, jumlahAda: 3 },
+        },
         sekolahTujuan: {
           id: "s-4",
           nama: "SMP Negeri 4 Kupang",
@@ -365,8 +376,8 @@ describe("simulasiMutasi", () => {
     );
     expect(hasil.tpg.status).toBe("tidak_berlaku");
     expect(hasil.tpg.alasan).toContain("belum bersertifikasi");
-    expect(hasil.rekomendasi.tingkat).toBe("perhatian");
-    expect(hasil.rekomendasi.alasan.join(" ")).not.toContain("TPG berisiko");
+    expect(hasil.rekomendasi.tingkat).toBe("aman");
+    expect(hasil.rekomendasi.alasan.join(" ")).not.toContain("TPG");
   });
 
   it("menghitung dampak psikologis untuk perpindahan lintas kabupaten 3T", () => {
