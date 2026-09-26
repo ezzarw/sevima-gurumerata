@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Hasil cetak slide: berkas biner besar, jangan dimasukkan ke repo.
+submission/*.pdf
