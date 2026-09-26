@@ -55,6 +55,8 @@ export interface BarisGuru {
   kabupaten_nama: string;
   provinsi_id: string;
   provinsi_nama: string;
+  /** Dibaca dari kabupaten.daerah_tertinggal, bukan daftar di kode. */
+  daerah_tertinggal: boolean;
 }
 
 export interface BarisMutasi {
@@ -316,6 +318,7 @@ export async function siapkanSimulasi(
       kabupaten: tujuan.kabupaten,
       provinsi: tujuan.provinsi,
       koordinat: { lat: tujuan.latitude, lon: tujuan.longitude },
+      daerahTertinggal: Boolean(guru.daerah_tertinggal),
       jumlahGuruMapel: jumlahGuruMapelTujuan,
       kebutuhanMapel: mapelDiSekolah(kebutuhanTujuan, guru.mapel),
     },

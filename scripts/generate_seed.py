@@ -164,16 +164,50 @@ def jam_per_guru(rombel, mapel, jenjang, ada):
 
 KAB_PROV = {nama: kode for kode, nama, _lat, _lon in KAB}
 
+# Karakter sebaran guru tiap kabupaten dideklarasikan sebagai data, bukan
+# ditebak dari kode provinsi atau nama kabupaten. Menambah kabupaten baru cukup
+# memberi nilainya di sini; tidak ada aturan tersembunyi yang harus ditiru.
+#
+#   "padat"   -> kelebihan guru (jam ngajar turun, TPG rawan)
+#   "kurang"  -> kekurangan guru (sekolah menumpuk rombel)
+#   "sedang"  -> seimbang
+KARAKTER = {
+    "Kota Jakarta Pusat": "padat",
+    "Kota Jakarta Timur": "padat",
+    "Kota Bandung": "padat",
+    "Kota Makassar": "padat",
+    "Kota Kupang": "kurang",
+    "Kota Jayapura": "kurang",
+    "Kabupaten Bogor": "sedang",
+    "Kabupaten Sumba Timur": "kurang",
+    "Kabupaten Jeneponto": "kurang",
+    "Kabupaten Asmat": "kurang",
+}
+
+# Kabupaten yang berstatus daerah tertinggal (3T). Daftar ini data demo, bukan
+# aturan di kode aplikasi: aplikasi membacanya dari kolom
+# kabupaten.daerah_tertinggal sehingga wilayah baru tidak perlu ubah kode.
+DAERAH_TERTINGGAL = {
+    "Kabupaten Asmat",
+    "Kabupaten Sumba Timur",
+    "Kabupaten Jeneponto",
+}
+
+# Berapa mapel pertama pada tiap sekolah yang terkena karakter kabupatennya.
+# Angka ini bagian dari pola demo, bukan aturan bisnis.
+MAPEL_TERDAMPAK = 2
+MAPEL_TERDAMPAK_3T = 3
+
+
 def penyesuaian(kabupaten, indeks):
-    """Pola nasional: kota besar kelebihan guru, daerah 3T kekurangan guru."""
-    provinsi = KAB_PROV[kabupaten]
-    if provinsi in ("31", "32") and indeks < 2:
-        return 1          # kelebihan guru -> jam ngajar di bawah 24 jam -> TPG rawan
-    if provinsi in ("53", "94") and indeks < 2:
-        return -1         # kekurangan guru -> sekolah menumpuk rombel
-    if kabupaten == "Kota Makassar" and indeks < 2:
+    """Kelebihan/kekurangan guru mengikuti karakter kabupaten di data."""
+    karakter = KARAKTER.get(kabupaten, "sedang")
+    batas = MAPEL_TERDAMPAK_3T if karakter == "kurang" else MAPEL_TERDAMPAK
+    if indeks >= batas:
+        return 0
+    if karakter == "padat":
         return 1
-    if kabupaten == "Kabupaten Jeneponto" and indeks < 3:
+    if karakter == "kurang":
         return -1
     return 0
 
@@ -199,9 +233,13 @@ for kode, nama, lat, lon in PROV:
              f"({esc(uid('prov', kode))}, {esc(kode)}, {esc(nama)}, {lat}, {lon}) on conflict (kode) do nothing;")
 L.append("")
 for kode, nama, lat, lon in KAB:
-    L.append(f"insert into public.kabupaten (id, provinsi_id, nama, latitude, longitude) values "
-             f"({esc(uid('kab', nama))}, {esc(uid('prov', kode))}, {esc(nama)}, {lat}, {lon}) "
-             f"on conflict (provinsi_id, nama) do nothing;")
+    # Status 3T adalah atribut wilayah yang berdiri sendiri, bukan turunan dari
+    # karakter sebaran guru. Kota Jayapura dan Kota Kupang kekurangan guru, tetapi
+    # keduanya ibu kota provinsi sehingga bukan daerah tertinggal.
+    tertinggal = "true" if nama in DAERAH_TERTINGGAL else "false"
+    L.append(f"insert into public.kabupaten (id, provinsi_id, nama, latitude, longitude, daerah_tertinggal) values "
+             f"({esc(uid('kab', nama))}, {esc(uid('prov', kode))}, {esc(nama)}, {lat}, {lon}, {tertinggal}) "
+             f"on conflict (provinsi_id, nama) do update set daerah_tertinggal = excluded.daerah_tertinggal;")
 L.append("")
 for nama, npsn, jenjang, kab, rombel, alamat, lat, lon, mapel_list, _dom in SEKOLAH:
     L.append(f"insert into public.sekolah (id, kabupaten_id, nama, npsn, jenjang, jumlah_rombel, alamat, latitude, longitude) values "

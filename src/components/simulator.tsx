@@ -120,6 +120,7 @@ export function Simulator({
         kabupaten: sekolahTujuan.kabupaten,
         provinsi: sekolahTujuan.provinsi,
         koordinat: { lat: sekolahTujuan.latitude, lon: sekolahTujuan.longitude },
+        daerahTertinggal: Boolean(guruTerpilih.daerah_tertinggal),
         jumlahGuruMapel: barisTujuan?.jumlah_ada ?? 0,
         kebutuhanMapel: {
           mapel: guruTerpilih.mapel,

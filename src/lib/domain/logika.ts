@@ -215,12 +215,16 @@ export interface InputSimulasi {
     kabupaten: string;
     provinsi: string;
     koordinat: Koordinat;
+    /**
+     * Status daerah tertinggal dibaca dari kolom kabupaten.daerah_tertinggal,
+     * bukan dari daftar tetap di kode. Menambah wilayah 3T baru cukup lewat
+     * data, tanpa mengubah aplikasi.
+     */
+    daerahTertinggal: boolean;
     jumlahGuruMapel: number;
     kebutuhanMapel: KebutuhanMapel;
   };
 }
-
-const DAERAH_TERTINGGAL = new Set(["Kabupaten Asmat", "Kabupaten Sumba Timur", "Kabupaten Jeneponto"]);
 
 /**
  * Simulasi mutasi: hitung jam ngajar baru, status TPG, jarak, dan dampak psikologis
@@ -250,7 +254,7 @@ export function simulasiMutasi(input: InputSimulasi): HasilSimulasi {
   const jarakDariSekolahAsalKm = hitungJarakKm(sekolahAsal.koordinat, sekolahTujuan.koordinat);
 
   const domisiliBedaKabupaten = guru.domisili !== sekolahTujuan.kabupaten;
-  const tujuanDaerahTertinggal = DAERAH_TERTINGGAL.has(sekolahTujuan.kabupaten);
+  const tujuanDaerahTertinggal = sekolahTujuan.daerahTertinggal;
 
   const psikologis = hitungDampakPsikologis({
     jarakKm: jarakDariDomisiliKm ?? jarakDariSekolahAsalKm,
