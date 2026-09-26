@@ -36,6 +36,17 @@ export async function proxy(permintaan: NextRequest) {
 
   const { pathname } = permintaan.nextUrl;
   const halamanPublik = pathname === "/masuk";
+  const ruteApi = pathname.startsWith("/api/");
+
+  // Rute API menjawab dengan JSON, bukan pengalihan HTML, supaya pemanggilnya
+  // mendapat keterangan yang bisa dibaca. Datanya tetap butuh sesi karena
+  // pembacaan lewat RLS Supabase.
+  if (!user && ruteApi) {
+    return Response.json(
+      { galat: "Sesi tidak ditemukan. Masuk lebih dulu untuk memakai asisten." },
+      { status: 401 },
+    );
+  }
 
   if (!user && !halamanPublik) {
     const url = permintaan.nextUrl.clone();

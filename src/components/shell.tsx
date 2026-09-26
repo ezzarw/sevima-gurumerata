@@ -1,7 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { Map, GraduationCap, School, ArrowLeftRight, ClipboardList, LogOut } from "lucide-react";
+import {
+  Map,
+  GraduationCap,
+  School,
+  ArrowLeftRight,
+  ClipboardList,
+  MessageSquareText,
+  LogOut,
+} from "lucide-react";
 import type { ReactNode } from "react";
 import { keluar } from "@/app/masuk/aksi";
 import { NavTautan } from "@/components/nav-tautan";
@@ -19,6 +27,7 @@ const MENU = [
   { href: "/sekolah", label: "Data sekolah", ikon: School },
   { href: "/simulator", label: "Simulator mutasi", ikon: ArrowLeftRight },
   { href: "/mutasi", label: "Pengajuan mutasi", ikon: ClipboardList },
+  { href: "/asisten", label: "Asisten analitis", ikon: MessageSquareText },
 ];
 
 export function Shell({
