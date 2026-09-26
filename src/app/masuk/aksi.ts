@@ -3,16 +3,11 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { buatKlienServer } from "@/lib/supabase/server";
+import { AKUN_DEMO, SANDI_DEMO } from "@/lib/data/akun-demo";
 
 export interface HasilMasuk {
   galat?: string;
 }
-
-const LABEL_PERAN: Record<string, string> = {
-  admin_dinas: "Admin Dinas",
-  operator_sekolah: "Operator Sekolah",
-  guru: "Guru",
-};
 
 export async function masuk(_sebelumnya: HasilMasuk, data: FormData): Promise<HasilMasuk> {
   const email = String(data.get("email") ?? "").trim();
@@ -33,46 +28,25 @@ export async function masuk(_sebelumnya: HasilMasuk, data: FormData): Promise<Ha
   redirect(tujuan.startsWith("/") ? tujuan : "/dashboard");
 }
 
-export async function daftar(_sebelumnya: HasilMasuk, data: FormData): Promise<HasilMasuk> {
+/**
+ * Masuk memakai salah satu akun demo tanpa mengetik kredensial.
+ *
+ * Halaman pendaftaran sengaja tidak disediakan. Aplikasi ini dinilai lewat
+ * akun demo, dan membiarkan pendaftaran terbuka hanya menambah permukaan
+ * masalah tanpa memberi nilai. Pengguna baru juga akan melihat halaman kosong
+ * karena RLS hanya mengizinkan guru melihat datanya sendiri, sedangkan baris
+ * datanya belum ada.
+ */
+export async function masukDemo(_sebelumnya: HasilMasuk, data: FormData): Promise<HasilMasuk> {
   const email = String(data.get("email") ?? "").trim();
-  const sandi = String(data.get("sandi") ?? "");
-  const nama = String(data.get("nama") ?? "").trim();
-  const peran = String(data.get("peran") ?? "guru");
-
-  if (!email || !sandi || !nama) {
-    return { galat: "Nama, email, dan kata sandi wajib diisi." };
-  }
-  if (sandi.length < 8) {
-    return { galat: "Kata sandi minimal 8 karakter." };
-  }
-  if (!(peran in LABEL_PERAN)) {
-    return { galat: "Peran yang dipilih tidak dikenal." };
+  if (!AKUN_DEMO.some((a) => a.email === email)) {
+    return { galat: "Akun demo yang dipilih tidak dikenal." };
   }
 
   const supabase = await buatKlienServer();
-  const { data: resData, error } = await supabase.auth.signUp({
-    email,
-    password: sandi,
-    options: { data: { nama, peran } },
-  });
+  const { error } = await supabase.auth.signInWithPassword({ email, password: SANDI_DEMO });
   if (error) {
-    if (error.message.toLowerCase().includes("already")) {
-      return { galat: "Email ini sudah terdaftar. Coba masuk saja." };
-    }
-    return { galat: `Pendaftaran gagal: ${error.message}` };
-  }
-
-  // Langsung otomatis masuk setelah mendaftar
-  const { error: errMasuk } = await supabase.auth.signInWithPassword({
-    email,
-    password: sandi,
-  });
-
-  if (errMasuk) {
-    // Jika Supabase butuh konfirmasi email
-    return {
-      galat: "Pendaftaran berhasil, tetapi memerlukan konfirmasi email sebelum masuk.",
-    };
+    return { galat: "Akun demo sedang tidak bisa diakses. Hubungi pengembang." };
   }
 
   revalidatePath("/", "layout");
