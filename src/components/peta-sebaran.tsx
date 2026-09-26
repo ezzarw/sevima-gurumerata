@@ -6,7 +6,8 @@ import type { LatLngBoundsExpression } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { statusDaerah } from "@/lib/domain/logika";
 import type { StatusKecukupan } from "@/lib/domain/tipe";
-import { cn, formatAngka, ringkasSebaran } from "@/lib/utils";
+import { formatAngka, ringkasSebaran } from "@/lib/data/format";
+import { cn } from "@/lib/utils";
 
 export interface TitikWilayah {
   id: string;

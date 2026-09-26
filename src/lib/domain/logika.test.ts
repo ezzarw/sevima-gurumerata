@@ -195,6 +195,12 @@ describe("hitungDampakPsikologis", () => {
     expect(hasil.faktor.join(" ")).toContain("60 km");
   });
 
+  it("menandai jarak harian yang masih dekat", () => {
+    const hasil = hitungDampakPsikologis({ ...dasar, jarakKm: 20 });
+    expect(hasil.faktor.join(" ")).toContain("Jarak dari domisili 20 km");
+    expect(hasil.kategori).toBe("ringan");
+  });
+
   it("menaikkan skor bila jam mengajar berkurang", () => {
     const hasil = hitungDampakPsikologis({ ...dasar, selisihJam: -5 });
     expect(hasil.skor).toBeGreaterThan(10);
@@ -350,6 +356,38 @@ describe("simulasiMutasi", () => {
     delete (tanpaKoordinat as { domisiliKoordinat?: unknown }).domisiliKoordinat;
     const hasil = simulasiMutasi(input({ guru: tanpaKoordinat }));
     expect(hasil.jarakDariDomisiliKm).toBeNull();
+  });
+
+  it("menjelaskan saat mutasi aman tanpa catatan tambahan", () => {
+    const hasil = simulasiMutasi(
+      input({
+        guru: { ...guruSertifikasi, jamNgajar: 30 },
+        sekolahAsal: {
+          ...input().sekolahAsal,
+          jumlahGuruMapel: 3,
+          kebutuhanMapel: { mapel: "Matematika", jumlahButuh: 3, jumlahAda: 3 },
+        },
+        sekolahTujuan: {
+          id: "s-5",
+          nama: "SMP Negeri 4 Kupang",
+          jenjang: "SMA",
+          // 12 rombel x 4 jam Matematika = 48 jam; butuh 2 formasi dan baru
+          // terisi 1, sehingga guru yang masuk membuat beban 24 jam per guru
+          // dan formasi di sekolah tujuan tepat terpenuhi.
+          rombel: 12,
+          kabupaten: "Kota Kupang",
+          provinsi: "Nusa Tenggara Timur",
+          koordinat: { lat: -10.1651, lon: 123.6195 },
+          jumlahGuruMapel: 1,
+          kebutuhanMapel: { mapel: "Matematika", jumlahButuh: 2, jumlahAda: 1 },
+        },
+      }),
+    );
+    expect(hasil.jamNgajarBaru).toBe(24);
+    expect(hasil.kebutuhan.status).toBe("cukup");
+    expect(hasil.rekomendasi.tingkat).toBe("aman");
+    expect(hasil.rekomendasi.alasan.join(" ")).toContain("memenuhi ambang 24 jam");
+    expect(hasil.rekomendasi.saran.join(" ")).toContain("Lanjutkan ke pengajuan resmi");
   });
 
   it("guru honorer tidak diberi klaim TPG aman", () => {

@@ -7,7 +7,8 @@ import { Kartu } from "@/components/kartu";
 import type { BarisKebutuhan, BarisSekolah } from "@/lib/data/kueri";
 import { hitungJamNgajar, statusKecukupan } from "@/lib/domain/logika";
 import type { StatusKecukupan } from "@/lib/domain/tipe";
-import { cn, formatAngka } from "@/lib/utils";
+import { formatAngka } from "@/lib/data/format";
+import { cn } from "@/lib/utils";
 
 const KELAS_BIDANG =
   "w-full rounded-kartu border border-garis-tegas bg-permukaan px-3 py-2 text-[14px]";

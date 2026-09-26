@@ -3,7 +3,8 @@
 import { useActionState, useState } from "react";
 import { AlertTriangle, Loader2 } from "lucide-react";
 import { ajukanMutasi, putuskanMutasi, type HasilAksi } from "@/app/(kerja)/mutasi/aksi";
-import { LABEL_ALASAN_MUTASI, cn, formatAngka } from "@/lib/utils";
+import { LABEL_ALASAN_MUTASI, formatAngka } from "@/lib/data/format";
+import { cn } from "@/lib/utils";
 import type { BarisGuru, BarisSekolah } from "@/lib/data/kueri";
 
 const AWAL: HasilAksi = {};

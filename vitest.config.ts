@@ -17,7 +17,15 @@ export default defineConfig({
       reporter: ["text", "json-summary", "html"],
       reportsDirectory: "./coverage",
       include: ["src/lib/**/*.ts", "src/app/api/**/*.ts"],
-      exclude: ["src/lib/supabase/**", "src/lib/data/**", "**/*.d.ts", "**/*.test.ts"],
+      // Yang dikecualikan hanya berkas yang butuh koneksi Supabase hidup.
+      // Sisanya, termasuk pemformatan dan istilah domain, ikut dihitung.
+      exclude: [
+        "src/lib/supabase/**",
+        "src/lib/data/kueri.ts",
+        "src/lib/data/eksekusi.ts",
+        "**/*.d.ts",
+        "**/*.test.ts",
+      ],
       thresholds: {
         lines: 80,
         functions: 80,

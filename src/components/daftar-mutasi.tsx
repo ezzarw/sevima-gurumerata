@@ -5,7 +5,7 @@ import { useActionState } from "react";
 import { batalkanMutasi, type HasilAksi } from "@/app/(kerja)/mutasi/aksi";
 import { LencanaStatusMutasi } from "@/components/lencana-mutasi";
 import { Kartu } from "@/components/kartu";
-import { formatTanggal, LABEL_ALASAN_MUTASI } from "@/lib/utils";
+import { formatTanggal, LABEL_ALASAN_MUTASI } from "@/lib/data/format";
 import type { BarisMutasi } from "@/lib/data/kueri";
 
 const AWAL: HasilAksi = {};

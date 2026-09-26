@@ -1,36 +1,111 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GuruMerata
 
-## Getting Started
+Guru tepat, di tempat yang tepat.
 
-First, run the development server:
+Aplikasi untuk dinas pendidikan: melihat sebaran guru per daerah, menghitung
+dampak mutasi **sebelum** diputuskan, dan mencatat prosesnya secara transparan.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Masalah yang diselesaikan: Indonesia punya 3,7 juta guru, tetapi distribusinya
+timpang. Satu daerah kekurangan guru, daerah lain kelebihan guru di mapel yang
+sama. Penyebabnya data tersebar di Dapodik, SIMPKB, dan InfoGTK yang tidak
+saling terhubung. Akibat paling mahal: guru bersertifikasi yang wajib mengajar
+minimal **24 jam tatap muka per minggu** bisa kehilangan TPG sekitar Rp2 juta
+per bulan bila dipindahkan ke sekolah yang jam mengajarnya sudah terisi.
+
+## Fitur
+
+| Halaman | Isi |
+|---|---|
+| `/dashboard` | Peta sebaran guru per provinsi (merah kekurangan, kuning cukup, hijau kelebihan), kartu statistik, daftar sekolah paling membutuhkan guru |
+| `/guru` | Daftar guru dengan pencarian dan penyaring mapel, status kepegawaian, provinsi, serta penanda TPG per baris |
+| `/sekolah` | Daftar sekolah dengan status kecukupan dan rincian kebutuhan per mapel |
+| `/simulator` | Hitung jam mengajar baru, status TPG, jarak dari domisili, dampak ke sekolah asal, dan skor dampak psikologis |
+| `/mutasi` | Pengajuan, review dinas, keputusan, dan riwayat. Menyetujui pengajuan benar-benar memindahkan guru dan menghitung ulang kebutuhan guru |
+| `/asisten` | Asisten analitis dengan function calling untuk empat pertanyaan yang paling sering muncul |
+
+## Aturan bisnis inti
+
+Seluruh aturan ada di satu tempat, `src/lib/domain/logika.ts`, dan dipakai
+bersama oleh antarmuka, aksi server, generator data contoh, serta unit test.
+Tidak ada perhitungan yang ditulis dua kali.
+
+```
+beban mapel x       = jumlah rombel x jam tatap muka mapel per minggu
+jumlah_butuh        = max(1, floor(x / 24))       # 24 jam syarat TPG
+jam_ngajar per guru = min(40, ceil(x / jumlah_ada))
+kurang              = max(butuh - ada, 0)         # sekolah kekurangan guru
+lebih               = max(ada - butuh, 0)         # guru kelebihan, TPG rawan
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tumpukan teknologi
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Next.js 16 (App Router) · TypeScript · Tailwind CSS v4 · Supabase (Postgres,
+Auth, RLS) · Leaflet + OpenStreetMap · Vitest · Docker · GitHub Actions.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Menjalankan
 
-## Learn More
+```bash
+cp .env.example .env.local     # isi kredensial Supabase dan kunci API asisten
+npm install
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Skema dan data contoh:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# jalankan supabase/migrations/20260926000001_skema_awal.sql
+# lalu supabase/seed.sql melalui SQL editor Supabase
+npm run seed:generate          # menulis ulang supabase/seed.sql (opsional)
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Data pada `supabase/seed.sql` adalah **data sintetis untuk demo**, bukan data
+resmi Dapodik, SIMPKB, atau InfoGTK. Nama sekolah, kabupaten, dan provinsi
+memakai nama nyata supaya polanya mudah dikenali; nama guru dibangkitkan.
 
-## Deploy on Vercel
+## Pengujian
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm test              # menjalankan seluruh unit test
+npm run test:coverage # dengan laporan cakupan
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Cakupan terakhir, dijalankan dengan `npm run test:coverage`:
+
+| Berkas | Statements | Branches | Functions | Lines |
+|---|---|---|---|---|
+| `src/lib/domain/logika.ts` | 99,14% | 95,00% | 100% | 100% |
+| `src/lib/data/format.ts` | 100% | 100% | 100% | 100% |
+| `src/lib/utils.ts` | 100% | 100% | 100% | 100% |
+| `src/lib/domain/tipe.ts` | 100% | 100% | 100% | 100% |
+| **Total** | **99,23%** | **95,23%** | **100%** | **100%** |
+
+Ambang minimum di `vitest.config.ts` adalah 80% untuk keempat ukuran, dan
+`npm run test:coverage` akan gagal bila ada yang turun di bawahnya.
+
+Yang diuji adalah logika bisnis, bukan tampilan: `hitungKekuranganGuru()`,
+`cekTPG()` (termasuk kasus tepat 24 jam), `simulasiMutasi()`, `hitungJarakKm()`,
+`hitungDampakPsikologis()`, serta pemformatan angka dan istilah domain.
+
+## Struktur
+
+```
+src/
+  app/
+    (kerja)/            halaman setelah login: dashboard, guru, sekolah,
+                        simulator, mutasi, asisten
+    masuk/              halaman masuk dan pendaftaran
+    api/asisten/        route function calling asisten
+  components/           komponen antarmuka
+  lib/
+    domain/             aturan bisnis dan tipenya (diuji unit)
+    data/               akses data Supabase dan pemformatan
+    supabase/           klien browser dan server
+  proxy.ts              penyegaran sesi dan penjaga halaman kerja
+supabase/
+  migrations/           skema, RLS, dan view
+  seed.sql              data contoh sintetis
+scripts/
+  generate_seed.py      generator data contoh
+Dockerfile              citra produksi
+.github/workflows/ci.yml
+```

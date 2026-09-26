@@ -6,7 +6,8 @@ import { KeadaanKosongFilter } from "@/components/keadaan";
 import { Kartu } from "@/components/kartu";
 import { cekTPG } from "@/lib/domain/logika";
 import type { BarisGuru } from "@/lib/data/kueri";
-import { cn, formatAngka } from "@/lib/utils";
+import { formatAngka } from "@/lib/data/format";
+import { cn } from "@/lib/utils";
 
 const KELAS_BIDANG =
   "w-full rounded-kartu border border-garis-tegas bg-permukaan px-3 py-2 text-[14px]";

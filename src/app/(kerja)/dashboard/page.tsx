@@ -4,7 +4,7 @@ import { Kartu, KartuStatistik } from "@/components/kartu";
 import { JudulHalaman } from "@/components/shell";
 import { PanelSebaran } from "@/components/panel-sebaran";
 import { ambilKebutuhan, ambilSekolah, ambilWilayah, ambilMutasi } from "@/lib/data/kueri";
-import { formatAngka, ringkasSebaran } from "@/lib/utils";
+import { formatAngka, ringkasSebaran } from "@/lib/data/format";
 
 export const metadata = { title: "Peta sebaran · GuruMerata" };
 

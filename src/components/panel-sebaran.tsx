@@ -4,7 +4,7 @@ import { useState } from "react";
 import { X } from "lucide-react";
 import { DaftarProvinsi, LegendaSebaran, PetaSebaran, type TitikWilayah } from "@/components/peta-sebaran";
 import { Kartu } from "@/components/kartu";
-import { formatAngka, ringkasSebaran } from "@/lib/utils";
+import { formatAngka, ringkasSebaran } from "@/lib/data/format";
 
 /**
  * Panel peta dan daftar provinsi berbagi satu keadaan terpilih, sehingga klik
