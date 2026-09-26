@@ -50,7 +50,7 @@ export async function daftar(_sebelumnya: HasilMasuk, data: FormData): Promise<H
   }
 
   const supabase = await buatKlienServer();
-  const { error } = await supabase.auth.signUp({
+  const { data: resData, error } = await supabase.auth.signUp({
     email,
     password: sandi,
     options: { data: { nama, peran } },
@@ -62,9 +62,21 @@ export async function daftar(_sebelumnya: HasilMasuk, data: FormData): Promise<H
     return { galat: `Pendaftaran gagal: ${error.message}` };
   }
 
-  return {
-    galat: undefined,
-  };
+  // Langsung otomatis masuk setelah mendaftar
+  const { error: errMasuk } = await supabase.auth.signInWithPassword({
+    email,
+    password: sandi,
+  });
+
+  if (errMasuk) {
+    // Jika Supabase butuh konfirmasi email
+    return {
+      galat: "Pendaftaran berhasil, tetapi memerlukan konfirmasi email sebelum masuk.",
+    };
+  }
+
+  revalidatePath("/", "layout");
+  redirect("/dashboard");
 }
 
 export async function keluar() {

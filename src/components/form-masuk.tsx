@@ -57,13 +57,7 @@ export function FormMasuk({ dari }: { dari: string }) {
           <TombolKirim sedang={sedangMasuk} label="Masuk" />
         </form>
       ) : (
-        <form
-          action={async (data: FormData) => {
-            aksiDaftar(data);
-            setPesanDaftar("Akun dibuat. Cek email untuk konfirmasi, lalu masuk lewat tab Masuk.");
-          }}
-          className="space-y-3"
-        >
+        <form action={aksiDaftar} className="space-y-3">
           <Bidang label="Nama lengkap" name="nama" type="text" autoComplete="name" />
           <Bidang label="Email" name="email" type="email" autoComplete="email" />
           <Bidang label="Kata sandi" name="sandi" type="password" autoComplete="new-password" keterangan="Minimal 8 karakter" />
