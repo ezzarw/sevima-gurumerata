@@ -84,7 +84,91 @@ export function Shell({
         </div>
       </aside>
 
-      <main className="min-w-0 px-4 py-5 lg:px-7 lg:py-6">{children}</main>
+      <div className="flex min-w-0 flex-col">
+        <main className="min-w-0 flex-1 px-4 py-5 lg:px-7 lg:py-6">{children}</main>
+        <Kaki />
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Kaki halaman mengikuti pola portal pemerintahan: beberapa kolom ringkas,
+ * pemisah garis, dan keterangan sumber data di bagian bawah. Fungsinya bukan
+ * hiasan, melainkan menegaskan dari mana angka di aplikasi ini berasal.
+ */
+function Kaki() {
+  return (
+    <footer className="mt-2 border-t border-garis bg-permukaan">
+      <div className="grid gap-6 px-4 py-6 sm:grid-cols-2 lg:grid-cols-4 lg:px-7">
+        <div>
+          <p className="text-[15px] font-semibold tracking-tight text-inti">GuruMerata</p>
+          <p className="mt-1 text-[13px] text-teks-lembut">Guru tepat, di tempat yang tepat.</p>
+          <p className="mt-2 text-[12px] text-teks-lembut">
+            Prototipe untuk hackathon SEMESTA 8, tema SDG 4 Pendidikan Berkualitas.
+          </p>
+        </div>
+
+        <div>
+          <p className="text-[13px] font-semibold">Menu</p>
+          <ul className="mt-2 space-y-1">
+            {MENU.map(({ href, label }) => (
+              <li key={href}>
+                <Link href={href} className="text-[13px] text-teks-lembut hover:text-inti hover:underline">
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <p className="text-[13px] font-semibold">Sumber data</p>
+          <p className="mt-2 text-[12px] leading-relaxed text-teks-lembut">
+            Di lapangan, data guru tersebar di Dapodik, SIMPKB, dan InfoGTK yang belum saling
+            terhubung. GuruMerata menunjukkan bagaimana ketiganya bisa dibaca sebagai satu
+            gambaran sebaran.
+          </p>
+        </div>
+
+        <div>
+          <p className="text-[13px] font-semibold">Catatan</p>
+          <p className="mt-2 text-[12px] leading-relaxed text-teks-lembut">
+            Seluruh angka pada versi ini adalah data sintetis untuk keperluan demo. Nama sekolah
+            dan kabupaten memakai nama nyata agar polanya mudah dikenali, tetapi jumlah guru dan
+            kebutuhannya bukan data resmi.
+          </p>
+        </div>
+      </div>
+
+      <div className="border-t border-garis px-4 py-3 lg:px-7">
+        <p className="text-[12px] text-teks-lembut">
+          GuruMerata · Prototipe kebijakan distribusi guru · Data sintetis, bukan data resmi
+          Dapodik, SIMPKB, atau InfoGTK.
+        </p>
+      </div>
+    </footer>
+  );
+}
+
+/**
+ * Judul bagian rata tengah dengan garis pemisah tipis, mengikuti pola bagian
+ * "dalam angka" pada portal data pemerintah. Dipakai untuk membuka sebuah blok
+ * isi, bukan untuk setiap kartu.
+ */
+export function JudulBagian({
+  judul,
+  keterangan,
+}: {
+  judul: string;
+  keterangan?: string;
+}) {
+  return (
+    <div className="border-t border-garis pt-5 text-center">
+      <h2 className="text-[20px] font-semibold tracking-tight text-inti">{judul}</h2>
+      {keterangan ? (
+        <p className="mx-auto mt-1 max-w-2xl text-[13px] text-teks-lembut">{keterangan}</p>
+      ) : null}
     </div>
   );
 }

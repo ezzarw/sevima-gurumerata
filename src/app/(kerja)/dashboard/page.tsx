@@ -1,7 +1,9 @@
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { Suspense } from "react";
 import { KeadaanGagal, KeadaanKosong, KeadaanMemuat } from "@/components/keadaan";
 import { Kartu, KartuStatistik } from "@/components/kartu";
-import { JudulHalaman } from "@/components/shell";
+import { JudulBagian, JudulHalaman } from "@/components/shell";
 import { PanelSebaran } from "@/components/panel-sebaran";
 import { ambilAman } from "@/lib/data/ambil";
 import { ambilKebutuhan, ambilSekolah, ambilWilayah, ambilMutasi } from "@/lib/data/kueri";
@@ -55,6 +57,11 @@ async function IsiDashboard() {
 
   return (
     <div className="space-y-5">
+      <JudulBagian
+        judul="GuruMerata dalam angka"
+        keterangan="Ringkasan sebaran guru pada data yang sedang dimuat, dihitung langsung dari tabel sekolah, guru, dan kebutuhan_guru."
+      />
+
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <KartuStatistik
           label="Sekolah terdata"
@@ -115,6 +122,15 @@ async function IsiDashboard() {
               ))}
             </ul>
           )}
+          <div className="border-t border-garis px-4 py-3">
+            <Link
+              href="/sekolah"
+              className="inline-flex items-center gap-1 text-[13px] font-medium text-inti hover:underline"
+            >
+              Lihat semua sekolah
+              <ArrowRight aria-hidden className="size-4" />
+            </Link>
+          </div>
         </Kartu>
 
         <Kartu
@@ -133,6 +149,15 @@ async function IsiDashboard() {
                 </li>
               ))}
           </ul>
+          <div className="border-t border-garis px-4 py-3">
+            <Link
+              href="/guru"
+              className="inline-flex items-center gap-1 text-[13px] font-medium text-inti hover:underline"
+            >
+              Lihat semua guru
+              <ArrowRight aria-hidden className="size-4" />
+            </Link>
+          </div>
         </Kartu>
       </div>
     </div>
