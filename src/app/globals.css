@@ -1,26 +1,69 @@
 @import "tailwindcss";
 
+/* Token warna GuruMerata. Nilai dan alasannya ada di DESIGN.md. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --latar: #f5f6f8;
+  --permukaan: #ffffff;
+  --garis: #e4e6eb;
+  --garis-tegas: #cdd2da;
+  --teks: #1c2430;
+  --teks-lembut: #5b6472;
+  --inti: #17375e;
+  --inti-lembut: #eaeff6;
+  /* Aksen digelapkan ke #8a5300: nilai jingga yang lebih terang hanya mencapai
+     kontras 3,46:1 di atas putih, di bawah syarat WCAG AA 4,5:1 untuk teks kecil. */
+  --aksen: #8a5300;
+  --aksen-lembut: #fbf0dc;
+  --kekurangan: #b3261e;
+  --kekurangan-lembut: #fbeae9;
+  --cukup: #9a6700;
+  --cukup-lembut: #fdf6e3;
+  --kelebihan: #1f6f4a;
+  --kelebihan-lembut: #e8f3ed;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-latar: var(--latar);
+  --color-permukaan: var(--permukaan);
+  --color-garis: var(--garis);
+  --color-garis-tegas: var(--garis-tegas);
+  --color-teks: var(--teks);
+  --color-teks-lembut: var(--teks-lembut);
+  --color-inti: var(--inti);
+  --color-inti-lembut: var(--inti-lembut);
+  --color-aksen: var(--aksen);
+  --color-aksen-lembut: var(--aksen-lembut);
+  --color-kekurangan: var(--kekurangan);
+  --color-kekurangan-lembut: var(--kekurangan-lembut);
+  --color-cukup: var(--cukup);
+  --color-cukup-lembut: var(--cukup-lembut);
+  --color-kelebihan: var(--kelebihan);
+  --color-kelebihan-lembut: var(--kelebihan-lembut);
+  --font-sans: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --radius-kartu: 6px;
+  --radius-lencana: 4px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--latar);
+  color: var(--teks);
+}
+
+/* Fokus keyboard harus selalu kelihatan, termasuk di atas peta. */
+:focus-visible {
+  outline: 2px solid var(--aksen);
+  outline-offset: 2px;
+}
+
+/* Peta Leaflet: warna asli tile tetap, hanya kontrol yang disesuaikan. */
+.leaflet-container {
+  font-family: var(--font-sans);
+  background: var(--latar);
+}
+.leaflet-control-attribution {
+  font-size: 11px;
 }

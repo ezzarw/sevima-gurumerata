@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Peta dirender di klien dengan Leaflet; tidak ada konfigurasi khusus,
+  // tetapi bagian ini disimpan agar penyesuaian berikutnya punya tempat.
+  reactStrictMode: true,
 };
 
 export default nextConfig;
