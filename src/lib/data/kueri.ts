@@ -110,13 +110,13 @@ export async function ambilSekolah(): Promise<BarisSekolah[]> {
   const ids = (data ?? []).map((s) => s.id);
   const jumlahGuru = new Map<string, number>();
   if (ids.length > 0) {
-    const { data: guru, error: galatGuru } = await supabase
-      .from("guru_publik")
-      .select("sekolah_id")
+    const { data: keb, error: galatKeb } = await supabase
+      .from("kebutuhan_sekolah")
+      .select("sekolah_id, jumlah_ada")
       .in("sekolah_id", ids);
-    if (galatGuru) throw new Error(galatGuru.message);
-    for (const g of guru ?? []) {
-      jumlahGuru.set(g.sekolah_id, (jumlahGuru.get(g.sekolah_id) ?? 0) + 1);
+    if (galatKeb) throw new Error(galatKeb.message);
+    for (const k of keb ?? []) {
+      jumlahGuru.set(k.sekolah_id, (jumlahGuru.get(k.sekolah_id) ?? 0) + (k.jumlah_ada ?? 0));
     }
   }
 
