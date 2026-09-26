@@ -1,0 +1,44 @@
+{
+  "_catatan": "Jam tatap muka per rombel per minggu untuk tiap mata pelajaran. Dipakai generator seed (Python) dan logika aplikasi (TypeScript) supaya angkanya tidak pernah beda.",
+  "SD": {
+    "Matematika": 6,
+    "Bahasa Indonesia": 6,
+    "IPA": 5,
+    "IPS": 4,
+    "PJOK": 4,
+    "Seni Budaya": 2,
+    "Informatika": 2,
+    "Pendidikan Agama": 3
+  },
+  "SMP": {
+    "Matematika": 5,
+    "Bahasa Indonesia": 5,
+    "IPA": 5,
+    "IPS": 4,
+    "Bahasa Inggris": 4,
+    "PJOK": 3,
+    "Informatika": 2,
+    "Seni Budaya": 2,
+    "Pendidikan Agama": 3
+  },
+  "SMA": {
+    "Matematika": 4,
+    "Bahasa Indonesia": 4,
+    "Bahasa Inggris": 4,
+    "Fisika": 3,
+    "Kimia": 3,
+    "Biologi": 3,
+    "Sejarah": 2,
+    "Informatika": 2,
+    "PJOK": 2
+  },
+  "SMK": {
+    "Matematika": 4,
+    "Bahasa Indonesia": 3,
+    "Bahasa Inggris": 4,
+    "Produktif TKJ": 8,
+    "Akuntansi": 6,
+    "Informatika": 3,
+    "PJOK": 2
+  }
+}
